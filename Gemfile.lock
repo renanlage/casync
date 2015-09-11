@@ -1,0 +1,37 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (3.2.19)
+      activesupport (= 3.2.19)
+      builder (~> 3.0.0)
+    activerecord (3.2.19)
+      activemodel (= 3.2.19)
+      activesupport (= 3.2.19)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
+    activesupport (3.2.19)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+    arel (3.0.3)
+    builder (3.0.0)
+    clockwork (1.2.0)
+      activesupport
+      tzinfo
+    delayed_job (4.0.6)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.0.3)
+      activerecord (>= 3.0, < 5.0)
+      delayed_job (>= 3.0, < 4.1)
+    i18n (0.7.0)
+    multi_json (1.11.2)
+    tzinfo (0.3.44)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  clockwork (~> 1.2.0)
+  delayed_job_active_record (~> 4.0.3)
+
+BUNDLED WITH
+   1.10.6

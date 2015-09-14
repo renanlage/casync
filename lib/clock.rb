@@ -4,10 +4,13 @@ require './config/boot'
 require './config/environment'
 
 module Clockwork
-  # handler receives the time when job is prepared to run in the 2nd argument
-  handler do |job, time|
-    puts "Running #{job}, at #{time}"
-  end
 
-  every(5.seconds, 'frequent.job') { User.delay.first.name }
+  # required to enable database syncing support
+  Clockwork.manager = DatabaseEvents::Manager.new
+
+  sync_database_events :model => CaSyncConfiguration, :every => 1.minute do |model_instance|
+
+    model_instance.delay.sync_with_ca
+
+  end
 end

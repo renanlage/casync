@@ -8,9 +8,9 @@ module Clockwork
   # required to enable database syncing support
   Clockwork.manager = DatabaseEvents::Manager.new
 
-  sync_database_events :model => CaSyncConfiguration, :every => 1.minute do |model_instance|
+  sync_database_events :model => CasyncConfiguration, :every => 1.minute do |model_instance|
 
-    model_instance.delay.sync_with_ca
+    CasyncConfiguration.delay.sync_with_ca
 
   end
 end

@@ -1,0 +1,17 @@
+# Brazilian portuguese strings go here for Rails i18n
+pt-BR:
+  ca_sync: 'CASync'
+  casync: 'CASync'
+  project_module_ca_sync: "Monitoramento & Controle por Projeto"
+  project_module_casync: "Monitoramento & Controle por Projeto"
+
+  # Configure page
+  title_configure: 'Configuração CASync'
+  ca_config_description: 'Configure o plugin CASync com os dados do banco de dados em que o CA é executado'
+  button_save: 'Salvar'
+  field_db_url: 'URL'
+  field_db_user: 'Usuário'
+  field_db_password: 'Senha'
+  field_redmine_user: 'ID do usuário Redmine'
+  field_frequency: 'Frequência da sincronização'
+

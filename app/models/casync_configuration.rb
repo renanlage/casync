@@ -1,4 +1,4 @@
-class CaSyncConfiguration < ActiveRecord::Base
+class CasyncConfiguration < ActiveRecord::Base
   attr_accessible :db_url, :db_user, :db_password, :frequency, :redmine_user_id
 
   def sync_with_ca

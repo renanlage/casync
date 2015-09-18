@@ -1,0 +1,51 @@
+<table>
+  <tbody>
+  <tr>
+    <th><%= l :field_db_url %>:</th>
+    <td>
+      <input required type="url" size=60 id="db_url"
+             value="<%= settings['db_url'] %>"
+             name="settings[db_url]" >
+    </td>
+  </tr>
+  <tr>
+    <th><%= l :field_db_user %>:</th>
+    <td>
+      <input required type="text" size=60 id="db_user"
+             value="<%= settings['db_user'] %>"
+             name="settings[db_user]" >
+    </td>
+  </tr>
+  <tr>
+    <th><%= l :field_db_password %>:</th>
+    <td>
+      <input required type="password" size=60 id="db_password"
+             value="<%= settings['db_password'] %>"
+             name="settings[db_password]" >
+    </td>
+  </tr>
+  <tr>
+    <th><%= l :field_frequency %>:</th>
+    <td>
+      <input required type="number" id="frequency"
+             value="<%= settings['frequency'] %>"
+             name="settings[frequency]" >
+    </td>
+  </tr>
+  <tr>
+    <th><%= l :field_redmine_user %>:</th>
+    <td>
+      <input required type="number" id="redmine_user_id"
+             value="<%= settings['redmine_user_id'] %>"
+             name="settings[redmine_user_id]" >
+    </td>
+  </tr>
+  <tr>
+    <th><%= l :field_active %>:</th>
+    <td>
+      <%= hidden_field_tag 'settings[active]', false, :id => nil %>
+      <%= check_box_tag 'settings[active]', true, Setting['plugin_casync']['active'] == 'true' %>
+    </td>
+  </tr>
+  </tbody>
+</table>

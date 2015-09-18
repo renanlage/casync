@@ -6,12 +6,10 @@ pt-BR:
   project_module_casync: "Monitoramento & Controle por Projeto"
 
   # Configure page
-  title_configure: 'Configuração CASync'
-  ca_config_description: 'Configure o plugin CASync com os dados do banco de dados em que o CA é executado'
-  button_save: 'Salvar'
-  field_db_url: 'URL'
-  field_db_user: 'Usuário'
-  field_db_password: 'Senha'
-  field_redmine_user: 'ID do usuário Redmine'
-  field_frequency: 'Frequência da sincronização'
+  field_db_url: 'URL do Banco de Dados'
+  field_db_user: 'Usuário do Banco de Dados'
+  field_db_password: 'Senha do Banco de Dados'
+  field_redmine_user: 'ID do Usuário Redmine'
+  field_frequency: 'Frequência da Sincronização'
+  field_active: 'Habilitar Plugin'
 

@@ -14,4 +14,9 @@ Redmine::Plugin.register :casync do
        :after => :projects,
        :caption => 'CASync',
        :if => Proc.new{ User.current.logged? }
+
+  settings :default => {
+                        'active' => false,
+                       },
+           :partial => 'settings/configure'
 end

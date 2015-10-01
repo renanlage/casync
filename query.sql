@@ -1,18 +1,18 @@
-select pcr.ref_num as Chamado,
+select pcr.ref_num as "Chamado",
         /*CASE WHEN (pcr.type = 'R') THEN 'Solicitação'
         WHEN (pcr.type = 'I') THEN 'Incidente'
            ELSE 'N/D'
         END tipo,  */
-        pc.sym as "Arvore_Sistemas",
-        to_char(nvl((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.open_date+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), null), 'DD/MM/YYYY hh24:mi:ss') as "Inicio",
-        to_char(nvl((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.LAST_MOD_DT+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), null), 'DD/MM/YYYY hh24:mi:ss') as mod_date,
+        pc.sym as "ArvoreSistema",
+        to_char(nvl((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.open_date+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), null), 'DD/MM/YYYY hh24:mi:ss') as "DataInicio",
+        to_char(nvl((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.LAST_MOD_DT+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), null), 'DD/MM/YYYY hh24:mi:ss') as "DataMod",
         /*CASE WHEN (al.system_time is not null) THEN to_char((to_date('01-JAN-1970','DD-MON-RRRR') + ((system_time+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), 'DD/MM/YYYY hh24:mi:ss')
             WHEN (pcr.resolve_date is not null) THEN to_char((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.resolve_date+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), 'DD/MM/YYYY hh24:mi:ss')
             ELSE to_char((to_date('01-JAN-1970','DD-MON-RRRR') + ((pcr.close_date+(TO_NUMBER(SUBSTR(TZ_OFFSET(sessiontimezone),1,3))*60*60)) / (60 * 60 * 24))), 'DD/MM/YYYY hh24:mi:ss')
         END Conclusao_Tarefa, */
         cc3.first_name||' '||cc3.middle_name as "Solicitante",
-        cc2.first_name||' '||cc2.middle_name as "Usuario_Afetado",
-        cc.first_name||' '||cc.middle_name as "Atribuido_Para",
+        cc2.first_name||' '||cc2.middle_name as "UsuarioAfetado",
+        cc.first_name||' '||cc.middle_name as "AtribuidoPara",
         cc4.last_name as "Grupo",
         cs.sym as "Situacao",
         pcr.summary as "Titulo",

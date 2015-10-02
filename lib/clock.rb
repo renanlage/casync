@@ -16,9 +16,10 @@ module Clockwork
   sync_database_events :model => CasyncConfiguration,
                        :every => 30.seconds do |model_instance|
 
-    settings = Setting.where(:name => 'plugin_casync')
-    if !settings.empty? && Setting.where(:name => 'plugin_casync').first.value['active'] == 'true'
+    setting = Setting.where(:name => 'plugin_casync').first
+    if !setting.nil? && setting.value['active'] == 'true'
       model_instance.delay.sync_with_ca
+      CasyncInstance.create.delay.sync_with_ca(model_instance)
     end
 
   end

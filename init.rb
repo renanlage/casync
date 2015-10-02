@@ -10,7 +10,7 @@ Redmine::Plugin.register :casync do
   permission :casync_permission, { :casync => [:show] }, :require => :loggedin
 
   menu :top_menu, :casync,
-       { :controller => 'casync', :action => 'show' },
+       { :controller => 'casync', :action => 'index' },
        :after => :projects,
        :caption => 'CASync',
        :if => Proc.new{ User.current.logged? }

@@ -19,11 +19,6 @@
 
 <%= form_tag({:controller => "casync", :action => "show"}, :method => "get") do %>
 
-    <p>
-      <label for="chamado_field"><%= t :chamado_field %>:</label>
-      <%= text_field_tag 'chamado' %>
-    </p>
-
     <p id="start_date_area">
       <label for="start_date"><%= t :start_date %>:</label>
       <input id="start_date" class="datepicker" name="start_date" size="10" type="text">
@@ -36,37 +31,6 @@
 
 
     <p class="buttons">
-      <%= submit_tag t :submit_form %>
+      <a class="icon icon-checked" href="#" onclick="$(this).closest('form').submit();"><%= t :submit_form %></a>
     </p>
 <% end %>
-
-<div class="autoscroll">
-  <table class="list issues">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th><%= t :chamado_date %></th>
-      <th><%= t :chamado_status %></th>
-      <th><%= t :chamado_n_inserted %></th>
-      <th><%= t :chamado_inserted %></th>
-      <th><%= t :chamado_n_updated %></th>
-      <th><%= t :chamado_updated %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @syncs.each do |sync| -%>
-        <tr class="<%= cycle('odd', 'even') %>">
-          <td class="id">
-            <%= sync.id %>
-          </td>
-          <td><%= sync.created_on.localtime.strftime("%d/%m/%y %H:%M") %></td>
-          <td><%= sync.succeeded? ? t(:succeeded) : t(:failed) %></td>
-          <td><%= sync.n_calls_inserted %></td>
-          <td><%= sync.calls_inserted.blank? ? "-" : sync.calls_inserted.split(",").join(", ") %></td>
-          <td><%= sync.n_calls_updated %></td>
-          <td><%= sync.calls_updated.blank? ? "-" : sync.calls_updated %></td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>

@@ -13,3 +13,15 @@ pt-BR:
   field_frequency: 'Frequência da Sincronização'
   field_active: 'Habilitar Plugin'
 
+  # View instances page
+  casync_title: "CASync"
+  submit_form: "Pesquisar"
+  succeeded: "Sucesso"
+  failed: "Falha"
+  chamado_field: "Chamado"
+  chamado_date: "Data"
+  chamado_status: "Status"
+  chamado_n_inserted: "QtdChamadosInseridos"
+  chamado_inserted: "ChamadosInseridos"
+  chamado_n_updated: "QtdChamadosAtualizados"
+  chamado_updated: "ChamadosAtualizados"

@@ -7,17 +7,13 @@ class CasyncInstance < ActiveRecord::Base
       query = File.read('plugins/casync/query.sql')
       mod_query = customize_query(query)
 
-      # # Connect to database and execute modified query
-      # # conn = OCI8.new(casync_configuration.db_user, casync_configuration.db_password, casync_configuration.db_url)
-      # # cursor = conn.exec(mod_query)
+      # Connect to database and execute modified query
+      conn = OCI8.new(casync_configuration.db_user, casync_configuration.db_password, casync_configuration.db_url)
+      cursor = conn.exec(mod_query)
 
-      # Temporarily read query output from file
-      file = File.read 'query_output.json'
-      data = JSON.parse file
-      #
       # Verify all necessary custom fields were created
       verify_custom_fields
-      #
+
       # Query to find all projects with HabilitarCASync field set to true
       projects = Project.where(:id => CustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
       # Query to find ArvoreSistemas field of project with CASync enabled
@@ -33,8 +29,7 @@ class CasyncInstance < ActiveRecord::Base
       calls_updated = []
 
       # Go through all calls
-      # while call = cursor.fetch_hash
-      data.each do |call|
+      while call = cursor.fetch_hash
 
         # Get corresponding issue if existent
         call_issue = get_corresponding_issue call

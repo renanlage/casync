@@ -19,6 +19,11 @@
 
 <%= form_tag({:controller => "casync", :action => "show"}, :method => "get") do %>
 
+    <p>
+      <label for="chamado_field"><%= t :chamado_field %>:</label>
+      <%= text_field_tag 'chamado' %>
+    </p>
+
     <p id="start_date_area">
       <label for="start_date"><%= t :start_date %>:</label>
       <input id="start_date" class="datepicker" name="start_date" size="10" type="text">
@@ -31,6 +36,6 @@
 
 
     <p class="buttons">
-      <a class="icon icon-checked" href="#" onclick="$(this).closest('form').submit();"><%= t :submit_form %></a>
+      <%= submit_tag t :submit_form %>
     </p>
 <% end %>

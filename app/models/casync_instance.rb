@@ -1,3 +1,5 @@
+require 'oci8'
+
 class CasyncInstance < ActiveRecord::Base
   attr_accessible :created_on, :succeeded, :message, :n_calls_inserted, :n_calls_updated, :calls_inserted, :calls_updated
 
@@ -62,19 +64,23 @@ class CasyncInstance < ActiveRecord::Base
       save
     rescue => error
       # Guarantee some variables were initialized
-      calls_inserted = [] unless defined?(calls_inserted)
-      calls_updated = [] unless defined?(calls_updated)
+      calls_inserted = [] if calls_inserted.nil?
+      calls_updated = [] if calls_updated.nil?
 
       # Update CasyncInstance with fail message
       self.calls_inserted = calls_inserted.join(',')
       self.calls_updated = calls_updated.join(',')
       self.succeeded = false
-      self.message = error.message + "\n" + error.backtrace
+      self.message = error.message + "\n" + error.backtrace.join('\n')
       save
     ensure
       # Guarantee connection to db will be closed
-      cursor.close if defined?(cursor)
-      conn.logoff if defined?(conn)
+      if defined?(cursor)
+        cursor.close unless cursor.nil?
+      end
+      if defined?(conn)
+        conn.logoff unless conn.nil?
+      end
     end
   end
 

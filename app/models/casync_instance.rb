@@ -19,7 +19,7 @@ class CasyncInstance < ActiveRecord::Base
       # Query to find all projects with HabilitarCASync field set to true
       projects = Project.where(:id => CustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
       # Query to find ArvoreSistemas field of project with CASync enabled
-      projects_arvore_sistema = CustomField.where(:name => 'ArvoreSistema').first.custom_values.where(:customized_id => projects).select([:customized_id, :value])
+      projects_arvore_sistema = CustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select([:customized_id, :value])
       #
       # Get last syncronization from db
       last_sync = CasyncInstance.order("created_on DESC").limit(1).first
@@ -30,7 +30,7 @@ class CasyncInstance < ActiveRecord::Base
       calls_inserted = []
       calls_updated = []
 
-      # Go through all calls
+
       while call = cursor.fetch_hash
 
         # Get corresponding issue if existent
@@ -62,7 +62,7 @@ class CasyncInstance < ActiveRecord::Base
       self.calls_updated = calls_updated.join(',')
       self.succeeded = true
       save
-    rescue => error
+     rescue => error
       # Guarantee some variables were initialized
       calls_inserted = [] if calls_inserted.nil?
       calls_updated = [] if calls_updated.nil?
@@ -73,6 +73,7 @@ class CasyncInstance < ActiveRecord::Base
       self.succeeded = false
       self.message = error.message + "\n" + error.backtrace.join('\n')
       save
+      raise error
     ensure
       # Guarantee connection to db will be closed
       if defined?(cursor)
@@ -89,8 +90,8 @@ class CasyncInstance < ActiveRecord::Base
     # Query to find all projects with HabilitarCASync field set to true
     projects = Project.where(:id => CustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
 
-    # Query to find ArvoreSistema field of project with CASync enabled
-    arvores_values = CustomField.where(:name => 'ArvoreSistema').first.custom_values.where(:customized_id => projects).select(:value)
+    # Query to find ArvoreSistemaRaiz field of project with CASync enabled
+    arvores_values = CustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select(:value)
     or_value = "            OR\n"
 
     # Find query line to be customized
@@ -138,6 +139,12 @@ class CasyncInstance < ActiveRecord::Base
 
   def verify_custom_fields
     # Get all tasks custom fields and raise error if they don't exist
+    enable_custom_field = ProjectCustomField.where(:name => 'HabilitarCaSync').first
+    raise "No project custom field named 'HabilitarCaSync'" if enable_custom_field.nil?
+
+    tree_custom_field = ProjectCustomField.where(:name => 'ArvoreSistemaRaiz').first
+    raise "No project custom field named 'ArvoreSistemaRaiz'" if tree_custom_field.nil?
+
     call_custom_field = IssueCustomField.where(:name => 'Chamado').first
     raise "No issue custom field named 'Chamado'" if call_custom_field.nil?
 

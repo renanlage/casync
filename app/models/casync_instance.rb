@@ -3,6 +3,10 @@ require 'oci8'
 class CasyncInstance < ActiveRecord::Base
   attr_accessible :created_on, :succeeded, :message, :n_calls_inserted, :n_calls_updated, :calls_inserted, :calls_updated
 
+  def max_attempts
+      0
+  end
+
   def sync_with_ca(casync_configuration)
     begin
       # Read query from file and customize it
@@ -17,9 +21,9 @@ class CasyncInstance < ActiveRecord::Base
       verify_custom_fields
 
       # Query to find all projects with HabilitarCASync field set to true
-      projects = Project.where(:id => CustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
+      projects = Project.where(:id => ProjectCustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
       # Query to find ArvoreSistemas field of project with CASync enabled
-      projects_arvore_sistema = CustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select([:customized_id, :value])
+      projects_arvore_sistema = ProjectCustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select([:customized_id, :value])
       #
       # Get last syncronization from db
       last_sync = CasyncInstance.order("created_on DESC").limit(1).first
@@ -30,7 +34,7 @@ class CasyncInstance < ActiveRecord::Base
       calls_inserted = []
       calls_updated = []
 
-
+      # Go through all calls
       while call = cursor.fetch_hash
 
         # Get corresponding issue if existent
@@ -62,7 +66,7 @@ class CasyncInstance < ActiveRecord::Base
       self.calls_updated = calls_updated.join(',')
       self.succeeded = true
       save
-     rescue => error
+    rescue => error
       # Guarantee some variables were initialized
       calls_inserted = [] if calls_inserted.nil?
       calls_updated = [] if calls_updated.nil?
@@ -71,7 +75,7 @@ class CasyncInstance < ActiveRecord::Base
       self.calls_inserted = calls_inserted.join(',')
       self.calls_updated = calls_updated.join(',')
       self.succeeded = false
-      self.message = error.message + "\n" + error.backtrace.join('\n')
+      self.message = error.message
       save
       raise error
     ensure
@@ -88,10 +92,10 @@ class CasyncInstance < ActiveRecord::Base
   # Receives a query and change it to lookup for all 'ArvoreSistemas' defined in projects
   def customize_query(query)
     # Query to find all projects with HabilitarCASync field set to true
-    projects = Project.where(:id => CustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
+    projects = Project.where(:id => ProjectCustomField.where(:name => 'HabilitarCaSync').first.custom_values.where(:value => 1).select(:customized_id))
 
     # Query to find ArvoreSistemaRaiz field of project with CASync enabled
-    arvores_values = CustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select(:value)
+    arvores_values = ProjectCustomField.where(:name => 'ArvoreSistemaRaiz').first.custom_values.where(:customized_id => projects).select(:value)
     or_value = "            OR\n"
 
     # Find query line to be customized
